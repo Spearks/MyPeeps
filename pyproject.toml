@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "MyPeeps"
+version = "0.1"
+description = ""
+authors = ["Spearks <otavio.canuto.m@gmail.com>"]
+license = "AGPL V3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.5"
+djangorestframework = "^3.14.0"
+drf-spectacular = {extras = ["sidecar"], version = "^0.26.5"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
