@@ -11,6 +11,7 @@ python = "^3.11"
 django = "^4.2.5"
 djangorestframework = "^3.14.0"
 drf-spectacular = {extras = ["sidecar"], version = "^0.26.5"}
+django-environ = "^0.11.2"
 
 [build-system]
 requires = ["poetry-core"]
