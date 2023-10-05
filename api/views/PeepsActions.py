@@ -20,7 +20,7 @@ class ActionsPeepView(APIView):
         if serializer.is_valid():
 
             #action = serializer.validated_data['action']
-        
+            print(serializer.validated_data)
             return Response({'message': f'Successful action: '}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

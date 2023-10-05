@@ -40,12 +40,20 @@ class Peeps(models.Model):
         print(self.attribute_creativity)
         if self.attribute_creativity == 0 and self.attribute_romance == 0:
             random.seed(self.seed)
-            print("ok")
             self.attribute_creativity = round(random.uniform(0, 0.5), 3)
             self.attribute_romance = round(random.uniform(0, 0.5), 3)
 
         super().save(*args, **kwargs)
 
+class PeepsMetric(models.Model):
+    time = models.DateTimeField(auto_now_add=True, db_index=True, primary_key=True)
+    action = models.CharField(max_length=255)
+    peep = models.ForeignKey(Peeps, on_delete=models.CASCADE)
+    hp = models.IntegerField()
+    attribute_creativity = models.FloatField()
+    attribute_romance = models.FloatField()
+
+    
 
 class PeepsSerializer(serializers.ModelSerializer): 
     class Meta:
