@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <div className="navbar bg-base-100">
@@ -36,7 +38,9 @@ function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">MyPeeps</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          MyPeeps
+        </Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">

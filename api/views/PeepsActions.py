@@ -23,7 +23,7 @@ root = tree.getroot()
 )
 class ActionsPeepView(APIView):
     permission_classes = [IsAuthenticated, PeepsUserPermissions]  
-    
+
     def post(self, request):
         
         serializer = ActionSerializer(data=request.data, context={'action_name' : self.request.data.get("name", None)})

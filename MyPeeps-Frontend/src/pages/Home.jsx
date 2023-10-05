@@ -1,3 +1,6 @@
+import { IoRocketSharp } from "react-icons/io5"
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -7,7 +10,9 @@ function Home() {
           <p className="py-6">
             Welcome to <b>MyPeeps</b>
           </p>
-          <button className="btn btn-primary">EXPLORE</button>
+          <Link to="/login" className="btn btn-primary">
+            GET STARTED <IoRocketSharp/>
+          </Link>
         </div>
       </div>
     </div>
