@@ -2,6 +2,8 @@ from django.db import models
 from rest_framework import serializers
 import random
 from accounts.models import User
+from django.core.validators import MaxValueValidator
+
 # Create your models here.
 
 class Peeps(models.Model):
@@ -14,6 +16,15 @@ class Peeps(models.Model):
 
     users = models.ManyToManyField(User, related_name="users")
 
+    hp = models.SmallIntegerField(editable=False, default=100)
+    
+    age = models.SmallIntegerField(editable=False, default=0)
+
+    # attributes
+
+    attribute_creativity = models.FloatField(editable=True, default=0)
+    attribute_romance = models.FloatField(editable=True, default=0)
+    
     def save(self, *args, **kwargs): 
         if not self.seed: 
             while True:
@@ -26,6 +37,12 @@ class Peeps(models.Model):
                     break
         
         self.name = self.name.lower().replace(' ', '_')
+        print(self.attribute_creativity)
+        if self.attribute_creativity == 0 and self.attribute_romance == 0:
+            random.seed(self.seed)
+            print("ok")
+            self.attribute_creativity = round(random.uniform(0, 0.5), 3)
+            self.attribute_romance = round(random.uniform(0, 0.5), 3)
 
         super().save(*args, **kwargs)
 

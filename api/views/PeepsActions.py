@@ -1,39 +1,26 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from api.models import Peeps
+from rest_framework import status, serializers
+
 from drf_spectacular.utils import extend_schema
-from rest_framework import serializers
 
-class ActionsPeepSerializer(serializers.Serializer):
-    action = serializers.CharField(max_length=100)
-
-    def validate(self, data):
-        action = data.get('action')
-
-        allowed_actions = ['action1', 'action2', 'action3']
-
-        if action not in allowed_actions:
-            raise serializers.ValidationError({'action': 'Invalid action. Allowed actions are action1, action2, action3.'})
-
-        return data
-
-
+from api.models import Peeps
+from api.serializers import ActionSerializer
 
 @extend_schema(
-    request=ActionsPeepSerializer, 
+    request=ActionSerializer, 
     responses={200: {'description': 'Action successful'}}, 
 )
 class ActionsPeepView(APIView):
     
     def post(self, request):
-
-        serializer = ActionsPeepSerializer(data=request.data)
+        
+        serializer = ActionSerializer(data=request.data, context={'action_name' : self.request.data.get("name", None)})
 
         if serializer.is_valid():
 
-            action = serializer.validated_data['action']
-
-            return Response({'message': f'Successful action: {action}'}, status=status.HTTP_200_OK)
+            #action = serializer.validated_data['action']
+        
+            return Response({'message': f'Successful action: '}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
