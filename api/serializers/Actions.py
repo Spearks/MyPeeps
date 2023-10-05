@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from api.models import Peeps
 import xml.etree.ElementTree as ET
 from mypeeps.settings import BASE_DIR
 import os
@@ -38,6 +39,7 @@ class UserOptionsSerializer(serializers.Serializer):
 class ActionSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     options = UserOptionsSerializer(many=False, context={"action_name" : name}, required=False)
+    peep = serializers.PrimaryKeyRelatedField(queryset=Peeps.objects.all())
 
     def validate_name(self, value):
         allowed_actions = [action.find('Name').text.strip() for action in root.findall('Action')]

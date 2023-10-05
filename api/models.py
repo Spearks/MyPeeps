@@ -22,8 +22,8 @@ class Peeps(models.Model):
 
     # attributes
 
-    attribute_creativity = models.FloatField(editable=True, default=0)
-    attribute_romance = models.FloatField(editable=True, default=0)
+    attribute_creativity = models.FloatField(editable=False, default=0)
+    attribute_romance = models.FloatField(editable=False, default=0)
     
     def save(self, *args, **kwargs): 
         if not self.seed: 
