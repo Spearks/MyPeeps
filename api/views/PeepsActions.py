@@ -3,11 +3,13 @@ import xml.etree.ElementTree as ET
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, serializers
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
 from api.models import Peeps
 from api.serializers import ActionSerializer
+from api.permissions import PeepsUserPermissions
 
 from mypeeps.settings import BASE_DIR
 
@@ -20,6 +22,7 @@ root = tree.getroot()
     responses={200: {'description': 'Action successful'}}, 
 )
 class ActionsPeepView(APIView):
+    permission_classes = [IsAuthenticated, PeepsUserPermissions]  
     
     def post(self, request):
         

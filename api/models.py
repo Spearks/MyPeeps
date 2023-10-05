@@ -37,7 +37,6 @@ class Peeps(models.Model):
                     break
         
         self.name = self.name.lower().replace(' ', '_')
-        print(self.attribute_creativity)
         if self.attribute_creativity == 0 and self.attribute_romance == 0:
             random.seed(self.seed)
             self.attribute_creativity = round(random.uniform(0, 0.5), 3)

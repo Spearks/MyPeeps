@@ -3,13 +3,11 @@ function Home() {
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold">Hello there</h1>
-          <p className="py-6 font-chalkboard">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+          <h1 className="text-5xl font-bold font-chalkboard animate-text bg-gradient-to-r from-accent via-accent-focus to-primary-focus bg-clip-text text-transparent">Hello there</h1>
+          <p className="py-6">
+            Welcome to <b>MyPeeps</b>
           </p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary">EXPLORE</button>
         </div>
       </div>
     </div>
