@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 **/migrations/**
-
+!**/migrations/__init__.py
 # React, and front-end stuff
 # Logs
 logs

@@ -1,5 +1,6 @@
 from rest_framework import viewsets
-from api.models import Peeps, PeepsSerializer
+from api.models import Peeps
+from api.serializers import PeepsSerializer
 
 class PeepsView(viewsets.ModelViewSet):
     """

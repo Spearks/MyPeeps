@@ -51,10 +51,3 @@ class PeepsMetric(models.Model):
     hp = models.IntegerField()
     attribute_creativity = models.FloatField()
     attribute_romance = models.FloatField()
-
-    
-
-class PeepsSerializer(serializers.ModelSerializer): 
-    class Meta:
-        model = Peeps
-        fields = '__all__'
