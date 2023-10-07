@@ -1,6 +1,3 @@
-import os
-import xml.etree.ElementTree as ET
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,11 +7,6 @@ from drf_spectacular.utils import extend_schema
 from api.models import Peeps
 from api.serializers import ActionSerializer
 from api.permissions import PeepsUserPermissions
-
-from mypeeps.settings import BASE_DIR
-
-tree = ET.parse( os.path.join(BASE_DIR, "playbooks", "Actions.xml") )
-root = tree.getroot()
 
 # TODO: User auth
 @extend_schema(

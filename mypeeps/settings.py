@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 import os
 from datetime import timedelta
+import json
 
 env = environ.Env(
     # set casting, default value
@@ -195,3 +196,5 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 AUTH_USER_MODEL = 'accounts.User'
+
+ACTIONS = json.load( open(os.path.join(BASE_DIR, "playbooks", "Actions.json") )  )

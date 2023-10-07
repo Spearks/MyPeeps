@@ -1,0 +1,18 @@
+{
+    "Read" : {
+        "UserOptions" : {
+            "Read Pablo Neruda" : {
+                "Effects" : {
+                    "Hp" : 0.1,
+                    "Romance" : 0.1
+                }
+            },
+            "Read Kafka" : {
+                "Effects" : {
+                    "Hp" : -0.1,
+                    "Logic" : 0.1
+                }
+            }
+        }
+    }   
+}

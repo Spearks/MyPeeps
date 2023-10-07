@@ -1,11 +1,9 @@
 from rest_framework import serializers
 from api.models import Peeps
-import xml.etree.ElementTree as ET
-from mypeeps.settings import BASE_DIR
+from mypeeps.settings import ACTIONS
 import os
 
-tree = ET.parse( os.path.join(BASE_DIR, "playbooks", "Actions.xml") )
-root = tree.getroot()
+actions = ACTIONS
 
 class UserOptionsSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
@@ -23,18 +21,11 @@ class UserOptionsSerializer(serializers.Serializer):
 
     def get_user_options(self, action_name):
 
-        user_options = []
-        for action in root.findall('Action'):
+        allowed_user_options = actions[action_name]["UserOptions"].keys()
 
-            if action.find("Name").text.strip() == action_name:
-                options = action.find('UserOptions')
-                if options is not None:
-                    for option in options.findall('Option'):
-                        option_name = option.find('Name').text.strip()
-                        user_options.append(option_name)
-                else:
-                    return True
-        return user_options
+        if allowed_user_options is not None: 
+            return allowed_user_options
+        else: return True
 
 class ActionSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
@@ -42,7 +33,7 @@ class ActionSerializer(serializers.Serializer):
     peep = serializers.PrimaryKeyRelatedField(queryset=Peeps.objects.all())
 
     def validate_name(self, value):
-        allowed_actions = [action.find('Name').text.strip() for action in root.findall('Action')]
+        allowed_actions = actions.keys()
         if value not in allowed_actions:
             raise serializers.ValidationError('Invalid Action. This action is not present in the Playbooks.')
         return value
