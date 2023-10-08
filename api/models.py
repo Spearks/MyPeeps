@@ -16,8 +16,6 @@ class Peeps(models.Model):
 
     users = models.ManyToManyField(User, related_name="users")
 
-    
-    
     age = models.SmallIntegerField(editable=False, default=0)
 
     # attributes

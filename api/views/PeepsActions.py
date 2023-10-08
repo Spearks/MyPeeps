@@ -36,7 +36,6 @@ class ActionsPeepView(APIView):
             peep = serializer.validated_data["peep"]
             useroption = selected_action["UserOptions"][serializer.validated_data["options"]["name"]]
                 
-
             current_time = timezone.now()
             # Check if Peep is in throttling 
             last_metric = PeepsMetric.objects.all().cache().filter(peep=peep, action=serializer.validated_data["options"]["name"]).last()

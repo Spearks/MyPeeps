@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.2'
 services:
     timescaledb:
       image: "timescale/timescaledb:latest-pg13"
@@ -10,3 +10,12 @@ services:
       image: "redis:alpine"
       ports: 
         - 6379:6379
+    django: 
+      build: .
+      ports: 
+        - 8000:8000
+      volumes: 
+        - django_src:/app/
+
+volumes:
+  django_src:
