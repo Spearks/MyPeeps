@@ -15,6 +15,7 @@ import environ
 import os
 from datetime import timedelta
 import json
+import sys
 
 env = environ.Env(
     # set casting, default value
@@ -93,6 +94,10 @@ WSGI_APPLICATION = "mypeeps.wsgi.application"
 
 DATABASES = {
     'default': env.db(),
+    'test' : {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
+    }
 }
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
