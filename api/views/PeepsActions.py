@@ -13,10 +13,9 @@ from mypeeps.settings import ACTIONS
 from django.utils import timezone
 from datetime import timedelta
 
-actions = ACTIONS
+from types import NoneType
 
-def apply_effect(UserOption):
-    pass
+actions = ACTIONS
 
 # TODO: Split in functions to be more readable
 @extend_schema(
@@ -42,7 +41,7 @@ class ActionsPeepView(APIView):
         
             rate_limit_threshold = current_time - timedelta(minutes=selected_action["Ratelimit"]["minute"])
 
-            if last_metric.time > rate_limit_threshold:
+            if type(last_metric) != NoneType and last_metric.time > rate_limit_threshold:
                 message = {
                     "message" : "Action are in throttle-limited"
                 }
