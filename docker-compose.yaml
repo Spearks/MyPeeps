@@ -6,6 +6,8 @@ services:
         - 5432:5432
       environment:
         - POSTGRES_PASSWORD=mypeeps
+      volumes: 
+        - timescaledb_volume:/var/lib/postgresql/data
     redis:
       image: "redis:alpine"
       ports: 
@@ -19,3 +21,4 @@ services:
 
 volumes:
   django_src:
+  timescaledb_volume:
