@@ -13,6 +13,9 @@
                     "Logic" : 0.1
                 }
             }
+        },
+        "Ratelimit" : {
+            "minute" : 1
         }
     }, 
     "Feed" : {
