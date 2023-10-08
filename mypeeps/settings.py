@@ -48,11 +48,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "api",
     "rest_framework",
     "rest_framework_simplejwt",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "cacheops",
+    "api",
     "accounts"
 ]
 
@@ -155,9 +156,8 @@ SPECTACULAR_SETTINGS = {
     'REDOC_DIST': 'SIDECAR',
 }
 
-
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=12),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -195,6 +195,15 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+CACHEOPS_REDIS = env('REDIS_URL')
+CACHEOPS_DEGRADE_ON_FAILURE = True
+
+CACHEOPS = {
+    'accounts.*': {'ops': 'all', 'timeout': 60},
+    'api.*': {'ops': 'all', 'timeout' : 60},
+}
+
 AUTH_USER_MODEL = 'accounts.User'
 
 ACTIONS = json.load( open(os.path.join(BASE_DIR, "playbooks", "Actions.json") )  )

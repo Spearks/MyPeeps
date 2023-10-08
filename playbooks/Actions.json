@@ -14,5 +14,15 @@
                 }
             }
         }
-    }   
+    }, 
+    "Feed" : {
+        "UserOptions" : {
+            "Feed Banana" : {
+                "Effects" : {
+                    "Hp" : 0.1,
+                    "Happiness" : 0.01
+                }
+            }
+        }
+    }
 }

@@ -4,11 +4,17 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
-from api.models import Peeps
-from api.serializers import ActionSerializer
+from api.models import PeepsMetric
+from api.serializers import ActionSerializer, PeepsSerializer
 from api.permissions import PeepsUserPermissions
 
-# TODO: User auth
+from mypeeps.settings import ACTIONS
+actions = ACTIONS
+
+def apply_effect(UserOption):
+    pass
+
+# TODO: User auth, Rate-limit, history 
 @extend_schema(
     request=ActionSerializer, 
     responses={200: {'description': 'Action successful'}}, 
@@ -22,9 +28,30 @@ class ActionsPeepView(APIView):
 
         if serializer.is_valid():
 
-            action = serializer.validated_data["name"]
+            selected_action = actions[serializer.validated_data["name"]]
             peep = serializer.validated_data["peep"]
+            useroption = selected_action["UserOptions"][serializer.validated_data["options"]["name"]]
+            
+            peep.add_to_attribute("romance", +2.2)
+            peep.save()
 
-            return Response({'message': f'Successful action: '}, status=status.HTTP_200_OK)
+
+            metric = PeepsMetric()
+            metric.action = serializer.validated_data["options"]["name"] # 
+            metric.peep = peep
+            metric.attribute_hp = peep.attribute_hp
+            metric.attribute_creativity = peep.attribute_creativity
+            metric.attribute_romance = peep.attribute_romance
+
+            metric.save()
+
+
+            peep_serialized = PeepsSerializer(peep) 
+
+            message_serialized = {
+                "message" : "Successful action",
+                "data" : peep_serialized.data
+            }
+            return Response(message_serialized)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

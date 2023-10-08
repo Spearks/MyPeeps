@@ -16,15 +16,22 @@ class Peeps(models.Model):
 
     users = models.ManyToManyField(User, related_name="users")
 
-    hp = models.SmallIntegerField(editable=False, default=100)
+    
     
     age = models.SmallIntegerField(editable=False, default=0)
 
     # attributes
-
-    attribute_creativity = models.FloatField(editable=False, default=0)
-    attribute_romance = models.FloatField(editable=False, default=0)
     
+    attribute_hp = models.SmallIntegerField(editable=False, default=100)
+    attribute_creativity = models.FloatField(editable=True, default=0)
+    attribute_romance = models.FloatField(editable=True, default=0)
+    attribute_happiness = models.FloatField(editable=True, default=0)
+
+    def add_to_attribute(self, attribute_name, value):
+        current_value = getattr(self, "attribute_"  + attribute_name)
+        setattr(self, "attribute_"  + attribute_name, current_value + value)
+        self.save()
+
     def save(self, *args, **kwargs): 
         if not self.seed: 
             while True:
@@ -48,6 +55,6 @@ class PeepsMetric(models.Model):
     time = models.DateTimeField(auto_now_add=True, db_index=True, primary_key=True)
     action = models.CharField(max_length=255)
     peep = models.ForeignKey(Peeps, on_delete=models.CASCADE)
-    hp = models.IntegerField()
+    attribute_hp = models.IntegerField()
     attribute_creativity = models.FloatField()
     attribute_romance = models.FloatField()

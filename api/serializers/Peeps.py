@@ -4,7 +4,7 @@ from api.models import Peeps
 class RelatedFieldsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Peeps
-        fields = ['attribute_creativity', 'attribute_romance']  
+        fields = ['attribute_creativity', 'attribute_romance', 'attribute_hp']  
 
 class PeepsSerializer(serializers.ModelSerializer):
     attributes = serializers.SerializerMethodField()
@@ -15,4 +15,4 @@ class PeepsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Peeps
-        fields = ['id', 'name', 'created_at', 'seed', 'hp', 'age', 'attributes','users']
+        fields = ['id', 'name', 'created_at', 'seed', 'age', 'attributes','users']
