@@ -7,4 +7,4 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 python manage.py test
 
-gunicorn mypeeps.wsgi -b 0.0.0.0
+gunicorn mypeeps.wsgi -b 0.0.0.0:${PORT}

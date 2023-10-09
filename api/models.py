@@ -53,6 +53,7 @@ class PeepsMetric(models.Model):
     time = models.DateTimeField(auto_now_add=True, db_index=True, primary_key=True)
     action = models.CharField(max_length=255)
     peep = models.ForeignKey(Peeps, on_delete=models.CASCADE)
+    
     attribute_hp = models.IntegerField()
     attribute_creativity = models.FloatField()
     attribute_romance = models.FloatField()
