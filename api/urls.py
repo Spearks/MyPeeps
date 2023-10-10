@@ -7,7 +7,6 @@ router = routers.DefaultRouter()
 
 router.register('peeps', PeepsView)
 
-
 urlpatterns = [
     path('', include(router.urls)),
     path('peeps/actions', ActionsPeepView.as_view(), name='actions_peeps'),
