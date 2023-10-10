@@ -20,7 +20,7 @@ class Peeps(models.Model):
 
     # attributes
     
-    attribute_hp = models.SmallIntegerField(editable=False, default=100)
+    attribute_hp = models.FloatField(editable=False, default=100)
     attribute_creativity = models.FloatField(editable=True, default=0)
     attribute_romance = models.FloatField(editable=True, default=0)
     attribute_happiness = models.FloatField(editable=True, default=0)

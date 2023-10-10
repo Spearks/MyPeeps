@@ -17,6 +17,11 @@ from types import NoneType
 
 actions = ACTIONS
 
+def apply_effects(Effects : dict, Peep : object):
+    for effect in list(Effects.keys()):
+        Peep.add_to_attribute(effect.lower(), Effects[effect])
+        Peep.save()
+        
 # TODO: Split in functions to be more readable
 @extend_schema(
     request=ActionSerializer, 
@@ -43,12 +48,12 @@ class ActionsPeepView(APIView):
 
             if type(last_metric) != NoneType and last_metric.time > rate_limit_threshold:
                 message = {
-                    "message" : "Action are in throttle-limited"
+                    "message" : "Action are in throttle-limited",
+                    "try_at" : str(last_metric.time + timedelta(minutes=selected_action["Ratelimit"]["minute"]))
                 }
                 return Response(message)
-            
-            peep.add_to_attribute("romance", +2.2)
-            peep.save()
+        
+            apply_effects(useroption["Effects"], peep)
 
             # Save to metrics
             metric = PeepsMetric()
