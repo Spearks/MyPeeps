@@ -219,4 +219,6 @@ CACHEOPS = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOCUST_TEST = env('LOCUST_TEST')
+
 ACTIONS = json.load( open(os.path.join(BASE_DIR, "playbooks", "Actions.json") )  )

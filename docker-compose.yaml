@@ -2,12 +2,31 @@ version: '3.2'
 services:
     timescaledb:
       image: "timescale/timescaledb:latest-pg13"
-      ports:
-        - 5432:5432
       environment:
         - POSTGRES_PASSWORD=mypeeps
       volumes: 
         - timescaledb_volume:/var/lib/postgresql/data
+    pgpool:
+      image: docker.io/bitnami/pgpool:4
+      ports:
+        - 5432:5432
+      environment:
+        - PGPOOL_BACKEND_NODES=0:timescaledb:5432
+        - PGPOOL_SR_CHECK_USER=postgres
+        - PGPOOL_SR_CHECK_PASSWORD=mypeeps
+        - PGPOOL_ENABLE_LDAP=no
+        - PGPOOL_POSTGRES_USERNAME=postgres
+        - PGPOOL_POSTGRES_PASSWORD=mypeeps
+        - PGPOOL_ADMIN_USERNAME=postgres
+        - PGPOOL_ADMIN_PASSWORD=mypeeps
+        - PGPOOL_ENABLE_LOAD_BALANCING=yes
+        - PGPOOL_POSTGRES_CUSTOM_USERS=postgres
+        - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=mypeeps
+      healthcheck:
+        test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
     redis:
       image: "redis:alpine"
       ports: 
@@ -20,7 +39,10 @@ services:
         - 8000:8000
       volumes: 
         - django_src:/app/
-
+      depends_on:
+        - pgpool
+        - timescaledb
+        - redis
 volumes:
   django_src:
   timescaledb_volume:

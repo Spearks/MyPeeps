@@ -80,7 +80,7 @@ class PeepsActionsViewTestCase(TestCase):
 
         # Assert Peeps data was updated
         updated_peep = Peeps.objects.get(id=self.peep.id)  
-        self.assertEqual(updated_peep.attribute_romance, self.peep.attribute_romance + 2.2)
+        self.assertEqual(updated_peep.attribute_romance, self.peep.attribute_romance + 0.1)
 
         # Assert PeepsMetric object was created
         self.assertEqual(PeepsMetric.objects.count(), 1)

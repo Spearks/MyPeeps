@@ -9,7 +9,7 @@ RUN PYTHONPATH=${PYTHONPATH}:${PWD} pip3 install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev
 
-COPY ../.. . 
+COPY . .
 
 EXPOSE 8000
 
