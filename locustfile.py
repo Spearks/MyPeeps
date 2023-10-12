@@ -9,6 +9,7 @@ class UserFullTest(HttpUser):
     password = None
     used_id = None
     token = None
+    last_peep_id = None
 
     def on_start(self):
 
@@ -62,7 +63,25 @@ class UserFullTest(HttpUser):
         name = "".join(random.choices(string.ascii_lowercase, k=10))
 
         # Call peeps create endpoint
-        self.client.post("/api/v1/peeps/", json={
+        response = self.client.post("/api/v1/peeps/", json={
            "name": name,
            "users" : [self.user_id]
+        }, headers=headers)
+
+        response_data = response.json()
+
+        self.last_peep_id = response_data['id']
+
+
+    @task
+    def action_peep(self):
+
+        headers = {"Authorization": f"Bearer {self.token}"}
+
+        response = self.client.post("/api/v1/peeps/actions", json={
+           "name": "Read",
+           "options" : {
+               "name" : "Read Pablo Neruda"
+           },
+           "peep" : self.last_peep_id
         }, headers=headers)

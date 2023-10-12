@@ -1,48 +1,102 @@
 version: '3.2'
 services:
-    timescaledb:
-      image: "timescale/timescaledb:latest-pg13"
-      environment:
-        - POSTGRES_PASSWORD=mypeeps
-      volumes: 
-        - timescaledb_volume:/var/lib/postgresql/data
-    pgpool:
-      image: docker.io/bitnami/pgpool:4
-      ports:
-        - 5432:5432
-      environment:
-        - PGPOOL_BACKEND_NODES=0:timescaledb:5432
-        - PGPOOL_SR_CHECK_USER=postgres
-        - PGPOOL_SR_CHECK_PASSWORD=mypeeps
-        - PGPOOL_ENABLE_LDAP=no
-        - PGPOOL_POSTGRES_USERNAME=postgres
-        - PGPOOL_POSTGRES_PASSWORD=mypeeps
-        - PGPOOL_ADMIN_USERNAME=postgres
-        - PGPOOL_ADMIN_PASSWORD=mypeeps
-        - PGPOOL_ENABLE_LOAD_BALANCING=yes
-        - PGPOOL_POSTGRES_CUSTOM_USERS=postgres
-        - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=mypeeps
-      healthcheck:
-        test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-    redis:
-      image: "redis:alpine"
-      ports: 
-        - 6379:6379
-    django: 
-      build: .
-      environment:
-        - PORT=8000
-      ports: 
-        - 8000:8000
-      volumes: 
-        - django_src:/app/
-      depends_on:
-        - pgpool
-        - timescaledb
-        - redis
+
+  nginx: 
+    image: "nginx:alpine"
+    volumes:
+      - ./nginx.mypeeps.conf:/etc/nginx/nginx.conf
+    ports: 
+      - 8000:80
+    networks:
+      - main
+
+  timescaledb:
+    image: "timescale/timescaledb:latest-pg13"
+    environment:
+      - POSTGRES_PASSWORD=mypeeps
+    volumes: 
+      - timescaledb_volume:/v ar/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+    networks:
+      - main
+
+  pgpool:
+    image: docker.io/bitnami/pgpool:4
+    ports:
+      - 5432:5432
+    environment:
+      - PGPOOL_BACKEND_NODES=0:timescaledb:5432
+      - PGPOOL_SR_CHECK_USER=postgres
+      - PGPOOL_SR_CHECK_PASSWORD=mypeeps
+      - PGPOOL_ENABLE_LDAP=no
+      - PGPOOL_POSTGRES_USERNAME=postgres
+      - PGPOOL_POSTGRES_PASSWORD=mypeeps
+      - PGPOOL_ADMIN_USERNAME=postgres
+      - PGPOOL_ADMIN_PASSWORD=mypeeps
+      - PGPOOL_ENABLE_LOAD_BALANCING=yes
+      - PGPOOL_POSTGRES_CUSTOM_USERS=postgres
+      - PGPOOL_POSTGRES_CUSTOM_PASSWORDS=mypeeps
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+    networks:
+      - main
+
+  redis:
+    image: "redis:alpine"
+    ports: 
+      - 6379:6379
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+    networks:
+      - main
+
+  django2: 
+    build: .
+    environment:
+      - PORT=8000
+    volumes: 
+      - .:/app/
+    depends_on:
+      - pgpool
+      - timescaledb
+      - redis
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    networks:
+      - main
+
+  django1: 
+    build: .
+    environment:
+      - PORT=8000
+    volumes: 
+      - .:/app/
+    depends_on:
+      - pgpool
+      - timescaledb
+      - redis
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+    networks:
+      - main
+networks:
+  main:
+
 volumes:
-  django_src:
   timescaledb_volume:

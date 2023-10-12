@@ -15,4 +15,5 @@ EXPOSE 8000
 
 RUN chmod +x /app/runner.sh
 
-ENTRYPOINT ["/app/runner.sh"]   
+ENTRYPOINT [ "bash" ]
+CMD ["/app/runner.sh"]   
