@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema
 
 from api.models import PeepsMetric
 from api.serializers import ActionSerializer, PeepsSerializer
@@ -12,6 +11,7 @@ from mypeeps.settings import ACTIONS
 
 from django.utils import timezone
 from datetime import timedelta
+from drf_spectacular.utils import extend_schema
 
 from types import NoneType
 
@@ -38,6 +38,13 @@ class ActionsPeepView(APIView):
 
             selected_action = actions[serializer.validated_data["name"]]
             peep = serializer.validated_data["peep"]
+            
+            if not request.user in list(peep.users.all()):
+                message = {
+                    "message" : "You are not allowed to do this"
+                }
+                return Response(message)
+
             useroption = selected_action["UserOptions"][serializer.validated_data["options"]["name"]]
                 
             current_time = timezone.now()
