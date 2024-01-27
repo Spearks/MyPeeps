@@ -7,7 +7,7 @@ license = "AGPL V3"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 django = "^4.2.5"
 djangorestframework = "^3.14.0"
 drf-spectacular = {extras = ["sidecar"], version = "^0.26.5"}
@@ -19,6 +19,8 @@ django-cacheops = "^7.0.1"
 gunicorn = "^21.2.0"
 whitenoise = {extras = ["brotli"], version = "^6.5.0"}
 locust = "^2.17.0"
+django-backblaze-b2 = "^5.1.0"
+django-redis = "^5.4.0"
 
 [build-system]
 requires = ["poetry-core"]

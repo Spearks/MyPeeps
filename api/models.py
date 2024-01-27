@@ -1,9 +1,9 @@
+from datetime import timedelta
 from django.db import models
 from rest_framework import serializers
 import random
 from accounts.models import User
 from django.core.validators import MaxValueValidator
-
 # Create your models here.
 
 class Peeps(models.Model):
@@ -47,6 +47,18 @@ class Peeps(models.Model):
             self.attribute_creativity = round(random.uniform(0, 0.5), 3)
             self.attribute_romance = round(random.uniform(0, 0.5), 3)
 
+        super().save(*args, **kwargs)
+
+class Effect(models.Model):
+    peep = models.ForeignKey(Peeps, on_delete=models.CASCADE)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField()
+    effect_type = models.CharField(max_length=255)
+
+    def save(self, *args, **kwargs):
+        if not self.pk: 
+            duration = timedelta(seconds=random.randint(60 * 7, 120 * 7))
+            self.end_time = self.start_time + duration
         super().save(*args, **kwargs)
 
 class PeepsMetric(models.Model):

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_spectacular",
     "drf_spectacular_sidecar",
+    "django_backblaze_b2",
     "cacheops",
     "api",
     "accounts"
@@ -89,7 +90,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mypeeps.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -99,6 +99,21 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase'
     }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND" : "django.core.cache.backends.dummy.DummyCache"
+    },
+    "django-backblaze-b2": {    
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
+BACKBLAZE_CONFIG = {
+    "application_key_id": env("B2_KEY_ID"),
+    "application_key": env("B2_KEY"),
+    "bucket": env("B2_BUCKET"),
 }
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
@@ -126,7 +141,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = env("LANGUAGE_CODE")
 
-TIME_ZONE = "UTC"
+TIME_ZONE = env('TIME_ZONE')
 
 USE_I18N = True
 
@@ -136,15 +151,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },  
-}
-
-
+STATIC_URL = env("B2_STATIC_URL")
+STATICFILES_STORAGE = "django_backblaze_b2.storage.BackblazeB2Storage"
+DEFAULT_FILE_STORAGE = "django_backblaze_b2.storage.BackblazeB2Storage"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -222,3 +231,5 @@ AUTH_USER_MODEL = 'accounts.User'
 LOCUST_TEST = env('LOCUST_TEST')
 
 ACTIONS = json.load( open(os.path.join(BASE_DIR, "playbooks", "Actions.json") )  )
+
+OPENPEEPS_PATH = os.path.join(BASE_DIR, env('OPENPEEPS_PATH'))

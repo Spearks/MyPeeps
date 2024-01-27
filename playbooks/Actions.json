@@ -5,6 +5,14 @@
                 "Effects" : {
                     "Hp" : 0.1,
                     "Romance" : 0.1
+                },
+                "Temporary" : {
+                    "Romance" : {
+                        "Value" : 0.1,
+                        "Assets" : {
+                            "Face" : "Loving Grin 1.svg"
+                        }
+                    }
                 }
             },
             "Read Kafka" : {

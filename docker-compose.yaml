@@ -1,15 +1,15 @@
 version: '3.2'
 services:
-
   nginx: 
     image: "nginx:alpine"
     volumes:
       - ./nginx.mypeeps.conf:/etc/nginx/nginx.conf
     ports: 
-      - 8000:80
+      - 8080:80
     networks:
       - main
-
+    depends_on:
+      - django
   timescaledb:
     image: "timescale/timescaledb:latest-pg13"
     environment:
@@ -62,7 +62,7 @@ services:
     networks:
       - main
 
-  django2: 
+  django: 
     build: .
     environment:
       - PORT=8000
@@ -79,22 +79,6 @@ services:
     networks:
       - main
 
-  django1: 
-    build: .
-    environment:
-      - PORT=8000
-    volumes: 
-      - .:/app/
-    depends_on:
-      - pgpool
-      - timescaledb
-      - redis
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-    networks:
-      - main
 networks:
   main:
 

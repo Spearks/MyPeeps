@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from api.models import PeepsMetric
+from api.models import PeepsMetric, Effect
 from api.serializers import ActionSerializer, PeepsSerializer
 from api.permissions import PeepsUserPermissions
 
@@ -18,11 +18,20 @@ from types import NoneType
 actions = ACTIONS
 
 def apply_effects(Effects : dict, Peep : object):
-    for effect in list(Effects.keys()):
-        Peep.add_to_attribute(effect.lower(), Effects[effect])
+    for currentEffect in list(Effects.keys()):
+        Peep.add_to_attribute(currentEffect.lower(), Effects[currentEffect])
+        
+        effect = Effect()
+
+        effect.peep = Peep
+        effect.start_time = timezone.localtime()
+        effect.end_time = timezone.localtime() 
+        effect.effect_type = currentEffect.lower()
+
+        effect.save()
         Peep.save()
         
-# TODO: Split in functions to be more readable
+
 @extend_schema(
     request=ActionSerializer, 
     responses={200: {'description': 'Action successful'}}, 
@@ -47,7 +56,7 @@ class ActionsPeepView(APIView):
 
             useroption = selected_action["UserOptions"][serializer.validated_data["options"]["name"]]
                 
-            current_time = timezone.now()
+            current_time = timezone.localtime()
             # Check if Peep is in throttling 
             last_metric = PeepsMetric.objects.all().cache().filter(peep=peep, action=serializer.validated_data["options"]["name"]).last()
         

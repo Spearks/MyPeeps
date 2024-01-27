@@ -5,7 +5,7 @@ from cacheops import cache
 
 class PeepsView(viewsets.ModelViewSet):
     """
-    API endopoint to fetch all Peeps objects.
+    API endpoint to fetch all Peeps objects.
     """
 
     queryset = Peeps.objects.all().order_by('-created_at').cache()
