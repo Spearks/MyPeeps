@@ -11,11 +11,11 @@ services:
     depends_on:
       - django
   timescaledb:
-    image: "timescale/timescaledb:latest-pg13"
+    image: docker.io/timescale/timescaledb:latest-pg13
     environment:
       - POSTGRES_PASSWORD=mypeeps
     volumes: 
-      - timescaledb_volume:/v ar/lib/postgresql/data
+      - timescaledb_volume:/var/lib/postgresql/data
     deploy:
       resources:
         limits:
@@ -50,7 +50,7 @@ services:
       - main
 
   redis:
-    image: "redis:alpine"
+    image: docker.io/redis:alpine
     deploy:
       resources:
         limits:
