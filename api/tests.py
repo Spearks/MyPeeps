@@ -42,11 +42,6 @@ class PeepsActionsViewTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        # Create a Peeps object 
-        self.peep = Peeps.objects.create(
-        name="Test Peep"
-        )
-
         # Create a sample user
         self.user = User.objects.create_user(
         username='test', 
@@ -54,6 +49,14 @@ class PeepsActionsViewTestCase(TestCase):
         password='password'
         )
 
+        # Create a Peeps object 
+        self.peep = Peeps.objects.create(
+        name="peep1",
+        )
+
+        # Assign user to peep
+        self.peep.users.add(self.user)
+        
         # Create sample JWT
         refresh = RefreshToken.for_user(self.user)
         jwt = str(refresh.access_token)

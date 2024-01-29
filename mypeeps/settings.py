@@ -93,12 +93,11 @@ WSGI_APPLICATION = "mypeeps.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+FULLDB = env.db()
+FULLDB['TEST'] = {'NAME': 'test_db'}
+
 DATABASES = {
-    'default': env.db(),
-    'test' : {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase'
-    }
+    'default': FULLDB,
 }
 
 CACHES = {

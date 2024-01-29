@@ -27,8 +27,6 @@ services:
 
   pgpool:
     image: docker.io/bitnami/pgpool:4
-    ports: 
-      - 5432:5432
     environment:
       - PGPOOL_BACKEND_NODES=0:timescaledb:5432
       - PGPOOL_SR_CHECK_USER=postgres
@@ -55,8 +53,6 @@ services:
 
   redis:
     image: docker.io/redis:alpine
-    ports: 
-      - 6379:6379
     deploy:
       resources:
         limits:
